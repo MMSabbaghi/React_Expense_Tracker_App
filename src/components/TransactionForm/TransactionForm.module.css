@@ -1,0 +1,35 @@
+.transaction_form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: 1px solid #393e46;
+  border-radius: 5px;
+  padding: 10px 5px;
+}
+
+.input {
+  width: 90%;
+  outline: none;
+  padding: 5px 2px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  border: 1px solid #393e46;
+}
+
+.btn {
+  margin-top: 5px;
+}
+
+.type {
+  display: flex;
+  align-items: center;
+}
+
+.type label {
+  margin-right: 5px;
+}
+
+.type input {
+  margin-right: 15px;
+}

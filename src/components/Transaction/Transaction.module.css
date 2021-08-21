@@ -1,0 +1,23 @@
+.transaction_item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  background-color: #fff;
+  border: 1px solid #393e46;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  border-right-width: 6px;
+}
+
+.right {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.remove_icon {
+  margin-left: 10px;
+  cursor: pointer;
+  color: #dc143a;
+}
