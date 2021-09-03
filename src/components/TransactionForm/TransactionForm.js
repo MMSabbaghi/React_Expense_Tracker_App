@@ -1,30 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./TransactionForm.module.css";
 import { useTransactionsActions } from "../../Providers/TransactionsProvider";
 
-const TransactionForm = () => {
-  const [description, setDescription] = useState("");
-  const [amount, setAmount] = useState("");
-  const [type, setType] = useState("");
+const TransactionForm = ({ selectedTransaction }) => {
   const dispatch = useTransactionsActions();
+
+  let initialTransaction = {
+    description: "",
+    amount: "",
+    type: "income",
+  };
+  const [transaction, setTransaction] = useState(initialTransaction);
+
+  useEffect(() => {
+    setTransaction(setTransaction);
+  }, [selectedTransaction]);
 
   const submitHandler = (e) => {
     e.preventDefault();
-
-    const transaction = {
-      type: type,
-      description: description,
-      amount: amount,
-    };
-
     dispatch({ type: "addNewTransaction", transaction: transaction });
+    setTransaction(initialTransaction);
+  };
 
-    setAmount("");
-    setDescription("");
+  const changeHandler = (e) => {
+    setTransaction({ ...transaction, [e.target.name]: e.target.value });
   };
 
   const changeTypeHandler = (e) => {
-    if (e.target.checked) setType(e.target.value);
+    if (e.target.checked) changeHandler(e);
   };
 
   return (
@@ -33,16 +36,18 @@ const TransactionForm = () => {
         <input
           type="text"
           placeholder="description..."
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          value={transaction.description}
+          name="description"
+          onChange={changeHandler}
           className={styles.input}
         />
         <input
           type="number"
           placeholder="amount..."
           min="0"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
+          value={transaction.amount}
+          name="amount"
+          onChange={changeHandler}
           className={styles.input}
         />
         <div className={styles.type}>
@@ -53,6 +58,7 @@ const TransactionForm = () => {
             value="income"
             name="type"
             onChange={changeTypeHandler}
+            checked
           />
           <label>expense</label>
           <input
@@ -65,7 +71,11 @@ const TransactionForm = () => {
         </div>
 
         <button
-          disabled={type === "" || description.length < 3 || amount === ""}
+          disabled={
+            transaction.type === "" ||
+            transaction.description.length < 3 ||
+            transaction.amount === ""
+          }
           type="submit"
           className={styles.btn}
         >
