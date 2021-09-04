@@ -12,6 +12,15 @@ const reducer = (state, action) => {
     case "removeTransaction": {
       return state.filter((t) => t.id !== action.id);
     }
+    case "updateTransaction": {
+      let newState = [...state];
+      let transactionIndex = newState.findIndex(
+        (t) => t.id === action.transaction.id
+      );
+      newState[transactionIndex] = action.transaction;
+      console.log();
+      return newState;
+    }
     default:
       return state;
   }

@@ -16,8 +16,16 @@
   align-items: center;
 }
 
-.remove_icon {
-  margin-left: 10px;
+.remove_icon,
+.edit_icon {
+  margin-left: 8px;
   cursor: pointer;
+}
+
+.remove_icon {
   color: #dc143a;
+}
+
+.edit_icon {
+  color: rgb(250, 148, 15);
 }

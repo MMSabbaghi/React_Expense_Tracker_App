@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import styles from "./TransactionForm.module.css";
 import { useTransactionsActions } from "../../Providers/TransactionsProvider";
+import notify from "../../utils/NotificationManager";
 
-const TransactionForm = ({ selectedTransaction }) => {
+const TransactionForm = ({ selectedTransaction, setSelectedTransaction }) => {
   const dispatch = useTransactionsActions();
 
   let initialTransaction = {
@@ -13,12 +14,21 @@ const TransactionForm = ({ selectedTransaction }) => {
   const [transaction, setTransaction] = useState(initialTransaction);
 
   useEffect(() => {
-    setTransaction(setTransaction);
+    if (selectedTransaction) setTransaction(selectedTransaction);
   }, [selectedTransaction]);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch({ type: "addNewTransaction", transaction: transaction });
+
+    if (selectedTransaction) {
+      dispatch({ type: "updateTransaction", transaction: transaction });
+      setSelectedTransaction(null);
+      notify("success", "Successfuly Edited !");
+    } else {
+      dispatch({ type: "addNewTransaction", transaction: transaction });
+      notify("success", "Successfuly Adedd !");
+    }
+
     setTransaction(initialTransaction);
   };
 
@@ -58,7 +68,7 @@ const TransactionForm = ({ selectedTransaction }) => {
             value="income"
             name="type"
             onChange={changeTypeHandler}
-            checked
+            checked={transaction.type === "income"}
           />
           <label>expense</label>
           <input
@@ -67,19 +77,16 @@ const TransactionForm = ({ selectedTransaction }) => {
             value="expense"
             name="type"
             onChange={changeTypeHandler}
+            checked={transaction.type === "expense"}
           />
         </div>
 
         <button
-          disabled={
-            transaction.type === "" ||
-            transaction.description.length < 3 ||
-            transaction.amount === ""
-          }
+          disabled={transaction.description === "" || transaction.amount === ""}
           type="submit"
           className={styles.btn}
         >
-          Add Transaction
+          {selectedTransaction ? "Edit Transaction" : "Add Transaction"}
         </button>
       </form>
     </>

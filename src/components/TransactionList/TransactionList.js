@@ -6,11 +6,20 @@ import {
 import SearchBar from "../SearchBar/SearchBar";
 import Transaction from "../Transaction/Transaction";
 import styles from "./TransactionList.module.css";
+import notify from "../../utils/NotificationManager";
 
-const TransactionList = () => {
+const TransactionList = ({ setSelectedTransaction, selectedTransaction }) => {
   const transactions = useTransactions();
   const [filteredTransactions, setFilteredTransactions] = useState([]);
   const dispatch = useTransactionsActions();
+
+  const deleteHandler = (transaction) => {
+    dispatch({ type: "removeTransaction", id: transaction.id });
+    if (transaction.id === selectedTransaction?.id) {
+      setSelectedTransaction(null);
+    }
+    notify("info", "Successfuly Removed !");
+  };
 
   const renderSearchBar = () => {
     return (
@@ -41,9 +50,8 @@ const TransactionList = () => {
         <Transaction
           key={transaction.id}
           transaction={transaction}
-          onDelete={() =>
-            dispatch({ type: "removeTransaction", id: transaction.id })
-          }
+          onDelete={() => deleteHandler(transaction)}
+          onEdit={() => setSelectedTransaction(transaction)}
         />
       ))}
     </>
