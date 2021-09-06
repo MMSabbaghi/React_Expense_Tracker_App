@@ -7,6 +7,7 @@ import SearchBar from "../SearchBar/SearchBar";
 import Transaction from "../Transaction/Transaction";
 import styles from "./TransactionList.module.css";
 import notify from "../../utils/NotificationManager";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 const TransactionList = ({ setSelectedTransaction, selectedTransaction }) => {
   const transactions = useTransactions();
@@ -46,14 +47,18 @@ const TransactionList = ({ setSelectedTransaction, selectedTransaction }) => {
     <>
       <h4 className={styles.title}> Transactions </h4>
       {renderSearchBar()}
-      {filteredTransactions.map((transaction) => (
-        <Transaction
-          key={transaction.id}
-          transaction={transaction}
-          onDelete={() => deleteHandler(transaction)}
-          onEdit={() => setSelectedTransaction(transaction)}
-        />
-      ))}
+      <TransitionGroup>
+        {filteredTransactions.map((transaction) => (
+          <CSSTransition key={transaction.id} timeout={500} classNames="fade">
+            <Transaction
+              key={transaction.id}
+              transaction={transaction}
+              onDelete={() => deleteHandler(transaction)}
+              onEdit={() => setSelectedTransaction(transaction)}
+            />
+          </CSSTransition>
+        ))}
+      </TransitionGroup>
     </>
   );
 };

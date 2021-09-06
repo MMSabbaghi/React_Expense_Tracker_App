@@ -3,9 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useTransactions } from "../../Providers/TransactionsProvider";
 import formatNumber from "../../utils/formatNumber";
 import { CSSTransition } from "react-transition-group";
-
 import styles from "./OverViewComponent.module.css";
-import "./css_transition.css";
 
 const OverViewComponent = ({ selectedTransaction, setSelectedTransaction }) => {
   const [showForm, setShowForm] = useState(false);
@@ -57,7 +55,7 @@ const OverViewComponent = ({ selectedTransaction, setSelectedTransaction }) => {
         in={showForm}
         timeout={200}
         unmountOnExit
-        classNames="display"
+        classNames="fade"
       >
         <TransactionForm
           selectedTransaction={selectedTransaction}
